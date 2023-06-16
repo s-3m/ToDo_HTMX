@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block css %}
+    <link rel="stylesheet" media="all" href="{% static 'todo/css/todo-style.css' %}">
+{% endblock css %}
+
+{% block content %}
+<div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col">
+            <div class="card" id="list1" style="border-radius: .75rem; background-color: #eff1f2;">
+                <div id="card-body" class="card-body py-4 px-4 px-md-5">
+
+                    <p class="h1 text-center mt-3 mb-4 pb-3 text-primary">
+                      <i class="fas fa-check-square me-1"></i>
+                      <u>My Todo-s</u>
+                    </p>
+
+                    <div class="pb-2">
+                        <div class="card">
+                            <div class="card-body">
+                                <form hx-post="{% url 'add_task' %}" hx-target='#card-body' hx-swap='beforeend'>
+                                    <div class="d-flex flex-row align-items-center">
+                                        {% render_field form.text class="form-control form-control-lg" id="exampleFormControlInput1" placeholder="Введите текст" %}
+                                        {% render_field form.user class='invisible' %}
+                                        {% render_field form.deadline type="text" class="me-3" id="deadline" title="Set due date" %}
+
+
+{#                                        <a href="#!" id='btn_calendar' data-mdb-toggle="tooltip" title="Set due date"><i class="fas fa-calendar-alt fa-lg me-3"></i></a>#}
+                                        <div>
+                                          <button type="submit" class="form-btn btn btn-primary">Добавить</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                        <hr class="my-4">
+
+                    <div class="d-flex justify-content-end align-items-center mb-4 pt-2 pb-3">
+                        <p class="small mb-0 me-2 text-muted">Фильтр</p>
+                        <select class="select">
+                            <option value="1">Все</option>
+                            <option value="2">Завершенные</option>
+                            <option value="3">Активные</option>
+                            <option value="4">С дэдлайном</option>
+                        </select>
+                        <p class="small mb-0 ms-4 me-2 text-muted">Сортировка</p>
+                        <select class="select">
+                            <option value="1">Добавлена</option>
+                            <option value="2">Срочность</option>
+                        </select>
+                        <a href="#!" style="color: #23af89;" data-mdb-toggle="tooltip" title="Ascending"><i
+                          class="fas fa-sort-amount-down-alt ms-2"></i></a>
+                    </div>
+                    {% if tasks %}
+                        {% for task in tasks %}
+                            {% include 'todo/inc/tasks_list.html' %}
+                        {% endfor %}
+                    {% else %}
+                        Ничего нет
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+{% block js %}
+     <script src="{% static 'todo/js/datepicker.js' %}"></script>
+{% endblock js %}

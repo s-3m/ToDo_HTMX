@@ -1,0 +1,50 @@
+.icon::before {
+    display: inline-block;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+  }
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    color: rgba(0, 0, 0, 0);
+    opacity: 1;
+    display: block;
+    background: url('../cal.svg') no-repeat;
+    width: 20px;
+    height: 20px;
+}
+
+#list1 .form-control {
+  border-color: transparent;
+}
+#list1 .form-control:focus {
+  border-color: transparent;
+  box-shadow: none;
+}
+#list1 .select-input.form-control[readonly]:not([disabled]) {
+  background-color: #fbfbfb;
+}
+
+.ui-datepicker-trigger {
+    width: 35px;
+    margin-right: 10px;
+    border: none;
+    background: none;
+    font-size: 16px;
+}
+.ui-datepicker-trigger:before {
+    font-size: 55px;
+}
+
+#deadline {
+    width: 90px;
+    border: none;
+    pointer-events: none;
+}
+
+.fa-calendar-days:before {
+    font-size: 40px;
+    margin-right: 10px;
+}
+.form-btn {
+    margin-left: 20px;
+}
