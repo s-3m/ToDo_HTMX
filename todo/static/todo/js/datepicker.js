@@ -9,7 +9,7 @@
 // }
 $(document).ready(()=>{
 
-    $('#deadline').datepicker({
+    $('[id=deadline]').datepicker({
         showOn: "button",
         buttonText: '<i class="fa-solid fa-calendar-days fa-2xl" style="color: #e0107f;"></i>',
         dateFormat:'yy-mm-dd'

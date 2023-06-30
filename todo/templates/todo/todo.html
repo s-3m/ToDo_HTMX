@@ -15,13 +15,14 @@
 
                     <p class="h1 text-center mt-3 mb-4 pb-3 text-primary">
                       <i class="fas fa-check-square me-1"></i>
-                      <u>My Todo-s</u>
+                      <u>Твои дела, {{ request.user.username }}</u>
                     </p>
 
                     <div class="pb-2">
                         <div class="card">
                             <div class="card-body">
-                                <form hx-post="{% url 'add_task' %}" hx-target='#card-body' hx-swap='beforeend'>
+                                <form hx-post="{% url 'add_task' %}" hx-target='#card_list' hx-swap="beforeend"
+                                    hx-on="htmx:beforeRequest: if ($('.not-item')) {$('.not-item').remove()}; $('#exampleFormControlInput1').val('')">
                                     <div class="d-flex flex-row align-items-center">
                                         {% render_field form.text class="form-control form-control-lg" id="exampleFormControlInput1" placeholder="Введите текст" %}
                                         {% render_field form.user class='invisible' %}
@@ -56,13 +57,9 @@
                         <a href="#!" style="color: #23af89;" data-mdb-toggle="tooltip" title="Ascending"><i
                           class="fas fa-sort-amount-down-alt ms-2"></i></a>
                     </div>
-                    {% if tasks %}
-                        {% for task in tasks %}
-                            {% include 'todo/inc/tasks_list.html' %}
-                        {% endfor %}
-                    {% else %}
-                        Ничего нет
-                    {% endif %}
+                    <div id="card_list">
+                        {% include 'todo/inc/task_list.html' %}
+                    </div>
                 </div>
             </div>
         </div>

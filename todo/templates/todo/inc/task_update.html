@@ -1,0 +1,26 @@
+{% load widget_tweaks %}
+<div class="pb-2 update-item">
+    <div class="card">
+        <div class="card-body">
+            <form hx-post="{% url 'task_update' task.pk %}" hx-target='#card_list'>
+                <div class="d-flex flex-row align-items-center">
+                    {% render_field form.text class="form-control form-control-lg" id="exampleFormControlInput1" placeholder="Введите текст" %}
+                    {% render_field form.user class='invisible' %}
+                    {% render_field form.deadline type="text" class="me-3" id="deadline_change" title="Set due date" %}
+
+
+                    <div>
+                      <button type="submit" class="form-btn btn btn-primary">Изменить</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $('#deadline_change').datepicker({
+        showOn: "button",
+        buttonText: '<i class="fa-solid fa-calendar-days fa-2xl" style="color: #e0107f;"></i>',
+        dateFormat:'yy-mm-dd'
+    })
+</script>

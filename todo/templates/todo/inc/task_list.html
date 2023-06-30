@@ -1,0 +1,7 @@
+{% if tasks %}
+    {% for task in tasks %}
+        {% include 'todo/inc/tasks_item.html' %}
+    {% endfor %}
+{% else %}
+    <div class="not-item h3 text-center text-danger">Дел нет :(</div>
+{% endif %}
