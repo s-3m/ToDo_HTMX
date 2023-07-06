@@ -43,18 +43,29 @@
 
                     <div class="d-flex justify-content-end align-items-center mb-4 pt-2 pb-3">
                         <p class="small mb-0 me-2 text-muted">Фильтр</p>
-                        <select class="select">
-                            <option value="1">Все</option>
-                            <option value="2">Завершенные</option>
-                            <option value="3">Активные</option>
-                            <option value="4">С дэдлайном</option>
+                        <select id='filter' name='filter' class="select" hx-get="{% url 'filter'  %}" hx-target='#card_list'
+                            hx-on="htmx:afterRequest: console.log(event.detail)"
+                            hx-vals='js:{"sort": $("#sort").val()}'>
+                            <option value="all">Все</option>
+                            <option value="done">Завершенные</option>
+                            <option value="active">Активные</option>
+                            <option value="with_deadline">С дэдлайном</option>
                         </select>
                         <p class="small mb-0 ms-4 me-2 text-muted">Сортировка</p>
-                        <select class="select">
-                            <option value="1">Добавлена</option>
-                            <option value="2">Срочность</option>
+                        <select id="sort" name="sort" class="select"
+                                hx-get="{% url 'filter' %}"
+                                hx-target='#card_list'
+                                hx-vals='js:{"filter": $("#filter").val()}'>
+                            <option value="create_data">Добавлена</option>
+                            <option value="time_to_finish">Срочность</option>
                         </select>
-                        <a href="#!" style="color: #23af89;" data-mdb-toggle="tooltip" title="Ascending"><i
+                        <a href="#!" id="sort_order" style="color: #23af89;" data-mdb-toggle="tooltip" title="Ascending" data-sort_order="asc"
+                            hx-get="{% url 'filter' %}"
+                            hx-target="#card_list"
+                            hx-vals='js:{"filter": $("#filter").val(), "sort": $("#sort").val(), "sort_order": $("#sort_order").data("sort_order")}'
+                            hx-on="htmx:afterRequest:
+                                if ($(this).data('sort_order') == 'asc') {$(this).html('<i class=\'fas fa-sort-amount-up-alt ms-2\'></i>'); $(this).data('sort_order', 'desc')}
+                                else {$(this).html('<i class=\'fas fa-sort-amount-down-alt ms-2\'></i>'); $(this).data('sort_order', 'asc')}"><i
                           class="fas fa-sort-amount-down-alt ms-2"></i></a>
                     </div>
                     <div id="card_list">
