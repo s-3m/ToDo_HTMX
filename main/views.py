@@ -9,7 +9,7 @@ from django.urls import reverse_lazy, reverse
 def index(request):
     context = {'title': 'Главная'}
     if request.user.is_authenticated:
-        return render(request, 'index.html', context=context)
+        return redirect(reverse('tasks_list'))
     else:
         return redirect(reverse('login'))
 

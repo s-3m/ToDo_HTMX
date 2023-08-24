@@ -1,0 +1,40 @@
+version: '3.1'
+services:
+
+  db:
+    container_name: postgres_db
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: todo
+    restart: always
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
+    networks:
+      - custom
+
+  app:
+    container_name: django_app
+    build: .
+    ports:
+      - '5555:8000'
+    depends_on:
+      - db
+#    volumes:
+#      - ./app_data:/ToDo_HTMX
+    networks:
+      - custom
+    command: bash -c "
+      ./wait.sh db
+      && python3 manage.py migrate
+      && gunicorn ToDo_HTMX.wsgi -b 0.0.0.0:8000
+      "
+#
+
+
+networks:
+  custom:
+    driver: bridge
