@@ -6,9 +6,10 @@ set -e
 host="$1"
 shift
 
-until POSTGRES_PASSWORD="postgres2" psql -h "$host" -d "todo" -U "postgres1" -c '\q'; do
+until PGPASSWORD="postgres" psql -h "$host" -d "todo" -U "postgres" -c '\q'; do
   >&2 echo "Postgres is unavailable - sleeping"
-  sleep 5
+  sleep 40
+  break
 done
 
 

@@ -1,4 +1,3 @@
-version: '3.1'
 services:
 
   db:
@@ -6,35 +5,54 @@ services:
     image: postgres
     ports:
       - "5432:5432"
+    env_file:
+      - '.env'
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: todo
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     restart: always
     volumes:
       - ./db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d todo -U postgres1" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
     networks:
       - custom
 
   app:
     container_name: django_app
     build: .
-    ports:
-      - '5555:8000'
+    expose:
+      - 8000
     depends_on:
-      - db
-#    volumes:
-#      - ./app_data:/ToDo_HTMX
+      db:
+        condition: service_healthy
+    volumes:
+      - ./:/ToDo_HTMX
     networks:
       - custom
-    command: bash -c "
-      ./wait.sh db
-      && python3 manage.py migrate
-      && gunicorn ToDo_HTMX.wsgi -b 0.0.0.0:8000
-      "
-#
+    command: bash -c "python3 manage.py migrate && gunicorn ToDo_HTMX.wsgi -b 0.0.0.0:8000"
+#      ./wait.sh db
+#      && python3 manage.py migrate
+#      && gunicorn ToDo_HTMX.wsgi -b 0.0.0.0:8000
+#      "
+  nginx:
+    build: ./nginx
+    ports:
+      - '8888:80'
+    networks:
+      - custom
+    depends_on:
+      - app
 
 
 networks:
   custom:
     driver: bridge
+
+volumes:
+  app_data:
+    name: "django_app_data"
